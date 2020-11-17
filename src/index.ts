@@ -124,7 +124,7 @@ const stat = async (filepath: string, _options?: {}) => {
 
   return {
     type: stats.isDirectory ? 'dir' : 'file',
-    mode: 0x777,
+    mode: 0o666,
     size: stats.size,
     ino: 1,
     mtimeMs: stats.modificationTime * 1e3,
