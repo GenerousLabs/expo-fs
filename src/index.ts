@@ -1,7 +1,7 @@
 import { Buffer } from 'buffer';
 import FileSystem, { EncodingType } from 'expo-file-system';
-import { join } from 'path';
 import { ENOENT } from './errors';
+import { dirname } from './path';
 
 type FileContents = Uint8Array | string;
 type Encoding = {
@@ -41,6 +41,17 @@ const getDataAndEncoding = ({
   return { data: uintData, encoding: EncodingType.Base64 };
 };
 
+const throwIfParentDoesNotExist = async (filepath: string) => {
+  const fileUri = filepath;
+  const dirUri = dirname(fileUri);
+  const dirStat = await FileSystem.getInfoAsync(dirUri);
+  if (!dirStat.exists) {
+    if (__dev__)
+      console.log('Parent directory missing #pUraCm', { filepath, fileUri });
+    throw new ENOENT(filepath);
+  }
+};
+
 /**
  *
  * @param filepath
@@ -48,6 +59,15 @@ const getDataAndEncoding = ({
  */
 const mkdir = async (filepath: string, _options?: Mode) => {
   const fileUri = pathToUri(filepath);
+  if (__dev__) console.log('mkdir called #oN8IFP', { filepath, fileUri });
+
+  // NOTE: isomorphic-git expects `mkdir()` to throw an `ENOENT()` error if the
+  // directory does not exist. Isomorphic-git relies on this to recursively
+  // create directories. As expo filesystem throws a different error, we test
+  // for the existence of the parent directory here and manually throw the error
+  // if it does not exist.
+  await throwIfParentDoesNotExist(filepath);
+
   await FileSystem.makeDirectoryAsync(fileUri);
   return;
 };
@@ -81,7 +101,13 @@ const writeFile = async (
     encoding: options?.encoding,
   });
 
-  return FileSystem.writeAsStringAsync(fileUri, contents, { encoding });
+  // NOTE: isomorphic-git expects `writeFile()` to throw an `ENOENT()` error if
+  // the directory does not exist. As expo filesystem throws a different error,
+  // we test for the existence of the parent directory here and manually throw
+  // the error if it does not exist.
+  await throwIfParentDoesNotExist(filepath);
+
+  return await FileSystem.writeAsStringAsync(fileUri, contents, { encoding });
 };
 
 const readFile = async (filepath: string, options?: Encoding) => {
@@ -95,6 +121,9 @@ const readFile = async (filepath: string, options?: Encoding) => {
     options?.encoding === 'utf8' ? EncodingType.UTF8 : EncodingType.Base64;
 
   const contents = await FileSystem.readAsStringAsync(fileUri, { encoding });
+
+  if (__dev__)
+    console.log('readFile() called #RkR9g1', { fileUri, encoding, contents });
 
   if (encoding === EncodingType.UTF8) {
     return contents;
