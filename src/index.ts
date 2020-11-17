@@ -153,19 +153,17 @@ const readlink = (_filepath: string, _options?: {}) => {
 };
 
 const api = {
-  promises: {
-    mkdir,
-    rmdir,
-    readdir,
-    writeFile,
-    readFile,
-    unlink,
-    rename,
-    stat,
-    lstat,
-    symlink,
-    readlink,
-  },
+  mkdir,
+  rmdir,
+  readdir,
+  writeFile,
+  readFile,
+  unlink,
+  rename,
+  stat,
+  lstat,
+  symlink,
+  readlink,
 };
 
 export default { promises: api };
