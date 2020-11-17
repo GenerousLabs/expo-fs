@@ -47,7 +47,7 @@ const getDataAndEncoding = ({
 };
 
 const throwIfParentDoesNotExist = async (filepath: string) => {
-  const fileUri = filepath;
+  const fileUri = pathToUri(filepath);
   const dirUri = dirname(fileUri);
   const dirStat = await FileSystem.getInfoAsync(dirUri);
   if (!dirStat.exists) {
