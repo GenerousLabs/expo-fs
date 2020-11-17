@@ -11,6 +11,11 @@ type Mode = {
   mode?: string;
 };
 
+// For some reason using octal `0o644` caused a TypeScript build error
+// complaining that `includes` was not a property of `undefined`. Setting the
+// mode here as a workaround.
+const mode = parseInt('0644', 8);
+
 const pathToUri = (filepath: string): string => {
   // NOTE: This will happen in the browser and is probably an error
   if (FileSystem.documentDirectory === null) {
@@ -153,7 +158,7 @@ const stat = async (filepath: string, _options?: {}) => {
 
   return {
     type: stats.isDirectory ? 'dir' : 'file',
-    mode: 0o644,
+    mode,
     size: stats.size,
     ino: 1,
     mtimeMs: stats.modificationTime * 1e3,
