@@ -1,3 +1,4 @@
+import { Buffer } from 'buffer';
 import FileSystem, { EncodingType } from 'expo-file-system';
 import { join } from 'path';
 import { ENOENT } from './errors';
