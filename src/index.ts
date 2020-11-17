@@ -60,7 +60,7 @@ const rmdir = async (filepath: string) => {
 
 const readdir = async (filepath: string, _options?: {}) => {
   const fileUri = pathToUri(filepath);
-  return FileSystem.readDirectoryAsync(fileUri);
+  return await FileSystem.readDirectoryAsync(fileUri);
 };
 
 /**
@@ -105,13 +105,13 @@ const readFile = async (filepath: string, options?: Encoding) => {
 
 const unlink = async (filepath: string, _options?: {}) => {
   const fileUri = pathToUri(filepath);
-  return FileSystem.deleteAsync(fileUri);
+  return await FileSystem.deleteAsync(fileUri);
 };
 
 const rename = async (oldFilepath: string, newFilepath: string) => {
   const oldFileUri = pathToUri(oldFilepath);
   const newFileUri = pathToUri(newFilepath);
-  return FileSystem.moveAsync({ from: oldFileUri, to: newFileUri });
+  return await FileSystem.moveAsync({ from: oldFileUri, to: newFileUri });
 };
 
 const stat = async (filepath: string, _options?: {}) => {
