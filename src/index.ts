@@ -15,7 +15,7 @@ const pathToUri = (filepath: string): string => {
   if (FileSystem.documentDirectory === null) {
     return `file://${filepath}`;
   }
-  return `file://${join(FileSystem.documentDirectory, filepath)}`;
+  return `${FileSystem.documentDirectory}${filepath}`;
 };
 
 const uintArrayToBase64 = ({ input }: { input: Uint8Array }): string => {
