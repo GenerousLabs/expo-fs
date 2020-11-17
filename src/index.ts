@@ -12,6 +12,7 @@ type Mode = {
 };
 
 const pathToUri = (filepath: string): string => {
+  // NOTE: This will happen in the browser and is probably an error
   if (FileSystem.documentDirectory === null) {
     return `file://${filepath}`;
   }
