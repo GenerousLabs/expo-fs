@@ -51,7 +51,7 @@ const throwIfParentDoesNotExist = async (filepath: string) => {
   const dirUri = dirname(fileUri);
   const dirStat = await FileSystem.getInfoAsync(dirUri);
   if (!dirStat.exists) {
-    if (__dev__)
+    if (__DEV__)
       console.log('Parent directory missing #pUraCm', { filepath, fileUri });
     throw new ENOENT(filepath);
   }
@@ -64,7 +64,7 @@ const throwIfParentDoesNotExist = async (filepath: string) => {
  */
 const mkdir = async (filepath: string, _options?: Mode) => {
   const fileUri = pathToUri(filepath);
-  if (__dev__) console.log('mkdir called #oN8IFP', { filepath, fileUri });
+  if (__DEV__) console.log('mkdir called #oN8IFP', { filepath, fileUri });
 
   // NOTE: isomorphic-git expects `mkdir()` to throw an `ENOENT()` error if the
   // directory does not exist. Isomorphic-git relies on this to recursively
@@ -127,7 +127,7 @@ const readFile = async (filepath: string, options?: Encoding) => {
 
   const contents = await FileSystem.readAsStringAsync(fileUri, { encoding });
 
-  if (__dev__)
+  if (__DEV__)
     console.log('readFile() called #RkR9g1', { fileUri, encoding, contents });
 
   if (encoding === EncodingType.UTF8) {
