@@ -24,7 +24,7 @@ const uintArrayToBase64 = ({ input }: { input: Uint8Array }): string => {
 };
 
 const base64ToUintArray = ({ input }: { input: string }): Uint8Array => {
-  return Buffer.from(input);
+  return Buffer.from(input, 'base64');
 };
 
 const getDataAndEncoding = ({
