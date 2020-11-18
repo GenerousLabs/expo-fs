@@ -3,7 +3,7 @@
 A wrapper around expo's
 [FileSystem](https://docs.expo.io/versions/latest/sdk/filesystem/) that
 matches node's FS api. Built to support
-[isomorphic-git](https://isomorphic-git.org/) on expo.
+[isomorphic-git](https://isomorphic-git.org/) on [expo](https://expo.io/).
 
 Limitations:
 
