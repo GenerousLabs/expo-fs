@@ -16,3 +16,5 @@ Limitations:
   - Currently we throw in the link related methods.
   - Git itself (including ismorphic-git) doesn't rely on symlinks.
   - This is probably okay for repos which don't include symlinks.
+
+[GitHub](https://github.com/GenerousLabs/expo-fs/issues)
