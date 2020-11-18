@@ -35,6 +35,7 @@
   },
   "name": "expo-fs",
   "author": "Callum Macdonald",
+  "homepage": "https://generouslabs.github.io/expo-fs/",
   "module": "dist/expo-fs.esm.js",
   "size-limit": [
     {
