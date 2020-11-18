@@ -1,7 +1,9 @@
 # expo-fs
 
-A wrapper around expo's FileSystem that matches node's FS api. Built to
-support isomorphic-git on expo.
+A wrapper around expo's
+[FileSystem](https://docs.expo.io/versions/latest/sdk/filesystem/) that
+matches node's FS api. Built to support
+[isomorphic-git](https://isomorphic-git.org/) on expo.
 
 Limitations:
 
