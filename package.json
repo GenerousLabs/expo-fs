@@ -17,7 +17,9 @@
     "lint": "tsdx lint",
     "prepare": "tsdx build",
     "size": "size-limit",
-    "analyze": "size-limit --why"
+    "analyze": "size-limit --why",
+    "build:docs": "rimraf docs && typedoc",
+    "publish:docs": "yarn build:docs && gh-pages docs/"
   },
   "peerDependencies": {},
   "husky": {
@@ -46,10 +48,13 @@
   ],
   "devDependencies": {
     "@size-limit/preset-small-lib": "^4.7.0",
+    "gh-pages": "^3.1.0",
     "husky": "^4.3.0",
+    "rimraf": "^3.0.2",
     "size-limit": "^4.7.0",
     "tsdx": "^0.14.1",
     "tslib": "^2.0.3",
+    "typedoc": "^0.20.0-beta.8",
     "typescript": "^4.0.5"
   },
   "dependencies": {
