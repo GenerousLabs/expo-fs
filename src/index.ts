@@ -1,7 +1,7 @@
 import { Buffer } from 'buffer';
 import FileSystem, { EncodingType } from 'expo-file-system';
+import { dirname, join } from 'path';
 import { ENOENT } from './errors';
-import { dirname } from './path';
 
 type FileContents = Uint8Array | string;
 type Encoding = {
@@ -21,7 +21,7 @@ const pathToUri = (filepath: string): string => {
   if (FileSystem.documentDirectory === null) {
     return `file://${filepath}`;
   }
-  return `${FileSystem.documentDirectory}${filepath}`;
+  return join(FileSystem.documentDirectory, filepath);
 };
 
 const uintArrayToBase64 = ({ input }: { input: Uint8Array }): string => {
