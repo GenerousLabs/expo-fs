@@ -115,7 +115,16 @@ const writeFile = async (
   return await FileSystem.writeAsStringAsync(fileUri, contents, { encoding });
 };
 
-const readFile = async (filepath: string, options?: Encoding) => {
+// const readFile = async (filepath: string, options?: Encoding): Promise<FileContents> => {
+async function readFile(
+  filepath: string,
+  options: Required<Encoding>
+): Promise<string>;
+async function readFile(filepath: string): Promise<Uint8Array>;
+async function readFile(
+  filepath: string,
+  options?: Encoding
+): Promise<FileContents> {
   const fileUri = pathToUri(filepath);
   if (typeof options !== 'undefined' && typeof options.encoding === 'string') {
     if (options.encoding !== 'utf8') {
@@ -135,7 +144,7 @@ const readFile = async (filepath: string, options?: Encoding) => {
   }
 
   return base64ToUintArray({ input: contents });
-};
+}
 
 const unlink = async (filepath: string, _options?: {}) => {
   const fileUri = pathToUri(filepath);
