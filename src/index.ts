@@ -46,15 +46,25 @@ const getDataAndEncoding = ({
   return { data: uintData, encoding: EncodingType.Base64 };
 };
 
-const throwIfParentDoesNotExist = async (filepath: string) => {
+/**
+ * isomorphic-git expects ENOENT errors to be thrown in some cases, and handles
+ * these cases specially. The expo filesystem exceptions are extremely varied,
+ * so in some cases we add an extra stat call to check if the file exists, and
+ * if not, throw the exception. Unclear what the performance implications of
+ * this are. Feedback welcome in the repo issues.
+ */
+const throwENOENTIfDoesNotExist = async (filepath: string) => {
   const fileUri = pathToUri(filepath);
-  const dirUri = dirname(fileUri);
-  const dirStat = await FileSystem.getInfoAsync(dirUri);
-  if (!dirStat.exists) {
-    if (__DEV__)
-      console.log('Parent directory missing #pUraCm', { filepath, fileUri });
+  const stats = await FileSystem.getInfoAsync(fileUri);
+
+  if (!stats.exists) {
     throw new ENOENT(filepath);
   }
+};
+
+const throwIfParentDoesNotExist = async (filepath: string) => {
+  const dirpath = dirname(filepath);
+  throwENOENTIfDoesNotExist(dirpath);
 };
 
 /**
@@ -78,6 +88,7 @@ const mkdir = async (filepath: string, _options?: Mode) => {
 };
 
 const rmdir = async (filepath: string) => {
+  throwENOENTIfDoesNotExist(filepath);
   const fileUri = pathToUri(filepath);
   await FileSystem.deleteAsync(fileUri);
   return;
@@ -147,6 +158,7 @@ async function readFile(
 }
 
 const unlink = async (filepath: string, _options?: {}) => {
+  throwENOENTIfDoesNotExist(filepath);
   const fileUri = pathToUri(filepath);
   return await FileSystem.deleteAsync(fileUri);
 };
