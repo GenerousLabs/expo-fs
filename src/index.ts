@@ -63,8 +63,8 @@ const throwENOENTIfDoesNotExist = async (filepath: string) => {
 };
 
 const throwIfParentDoesNotExist = async (filepath: string) => {
-  const dirpath = dirname(filepath);
-  throwENOENTIfDoesNotExist(dirpath);
+  const parentPath = dirname(filepath);
+  await throwENOENTIfDoesNotExist(parentPath);
 };
 
 /**
@@ -96,7 +96,7 @@ const mkdir = async (filepath: string, _options?: Mode) => {
 };
 
 const rmdir = async (filepath: string) => {
-  throwENOENTIfDoesNotExist(filepath);
+  await throwENOENTIfDoesNotExist(filepath);
   const fileUri = pathToUri(filepath);
   await FileSystem.deleteAsync(fileUri);
   return;
@@ -172,7 +172,7 @@ async function readFile(
 }
 
 const unlink = async (filepath: string, _options?: {}) => {
-  throwENOENTIfDoesNotExist(filepath);
+  await throwENOENTIfDoesNotExist(filepath);
   const fileUri = pathToUri(filepath);
   return await FileSystem.deleteAsync(fileUri);
 };
