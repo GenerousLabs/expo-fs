@@ -1,7 +1,7 @@
 import { Buffer } from 'buffer';
 import FileSystem, { EncodingType } from 'expo-file-system';
 import { dirname, join } from 'path';
-import { ENOENT } from './errors';
+import { EEXIST, ENOENT, ENOTDIR } from './errors';
 
 type FileContents = Uint8Array | string;
 type Encoding = {
@@ -83,6 +83,14 @@ const mkdir = async (filepath: string, _options?: Mode) => {
   // if it does not exist.
   await throwIfParentDoesNotExist(filepath);
 
+  // Again, isomorphic-git expects an EEXIST error to be thrown in case the
+  // directory does already exist. It then silently swallows the error, but to
+  // preserve interopability let's keep to the expected spec.
+  const stats = await FileSystem.getInfoAsync(fileUri);
+  if (stats.exists) {
+    throw new EEXIST(filepath);
+  }
+
   await FileSystem.makeDirectoryAsync(fileUri);
   return;
 };
@@ -96,6 +104,12 @@ const rmdir = async (filepath: string) => {
 
 const readdir = async (filepath: string, _options?: {}) => {
   const fileUri = pathToUri(filepath);
+
+  const stats = await FileSystem.getInfoAsync(fileUri);
+  if (!stats.isDirectory) {
+    throw new ENOTDIR(filepath);
+  }
+
   return await FileSystem.readDirectoryAsync(fileUri);
 };
 
